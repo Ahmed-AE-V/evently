@@ -1,8 +1,17 @@
-import 'package:evently/constants/app_images.dart';
 import 'package:evently/constants/app_styles.dart';
 import 'package:evently/l10n/app_localizations.dart';
+import 'package:evently/models/user_model.dart';
 import 'package:evently/routes/app_routes.dart';
+import 'package:evently/screens/auth_screen/widgets/forget_link.dart';
+import 'package:evently/widgets/auth_switch_link.dart';
+import 'package:evently/widgets/google_sign_in_button.dart';
+import 'package:evently/utils/auth_service.dart';
+import 'package:evently/utils/validators.dart';
 import 'package:evently/widgets/custom_elevated_button.dart';
+import 'package:evently/widgets/custom_text_form_field.dart';
+import 'package:evently/widgets/header.dart';
+import 'package:evently/widgets/or_divder.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -13,7 +22,75 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _authService = AuthService();
+  bool _isLoading = false;
   bool _obscureText = true;
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+    try {
+      await _authService.login(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(
+        context,
+        AppRoutes.mainLayoutScreen,
+        arguments: UserModel,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(_authService.getErrorMessage(e))));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Something went wrong. Try again')),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() => _isLoading = true);
+    try {
+      final result = await _authService.signInWithGoogle();
+      if (result == null) {
+        setState(() => _isLoading = false);
+        return;
+      }
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, AppRoutes.mainLayoutScreen);
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(_authService.getErrorMessage(e))));
+    } catch (e) {
+      if (!mounted) return;
+      print('Google sign-in error: $e');
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Google sign-in failed: $e')));
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
@@ -24,39 +101,29 @@ class _AuthScreenState extends State<AuthScreen> {
         child: Column(
           crossAxisAlignment: .start,
           children: [
-            Row(
-              mainAxisAlignment: .center,
-              children: [Image.asset(AppImages.boardingTitle)],
-            ),
+            Header(),
             SizedBox(height: 48),
             Text(t.loginMassege, style: AppStyles.loginMassege(context)),
             SizedBox(height: 24),
-            Column(
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email_outlined),
+            Form(
+              key: _formKey,
+              child: Column(
+                spacing: 16,
+                children: [
+                  CustomTextFormField(
+                    controller: _emailController,
+                    validator: Validators.email,
                     hintText: t.emailHint,
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).disabledColor,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).disabledColor,
-                      ),
-                    ),
+                    prefixIcon: Icon(Icons.email_outlined),
                   ),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  obscureText: _obscureText,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock_outline_rounded),
+                  CustomTextFormField(
+                    controller: _passwordController,
+                    validator: (v) => (v == null || v.isEmpty)
+                        ? 'Password is required'
+                        : null,
                     hintText: t.passwordHint,
+                    prefixIcon: Icon(Icons.lock_outline_rounded),
+                    obscureText: _obscureText,
                     suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
@@ -67,82 +134,42 @@ class _AuthScreenState extends State<AuthScreen> {
                           ? Icon(Icons.visibility_outlined)
                           : Icon(Icons.visibility_off_outlined),
                     ),
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).disabledColor,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).disabledColor,
-                      ),
-                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            Row(
-              children: [
-                Spacer(),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRoutes.forgetPasswordScreen,
-                    );
-                  },
-                  child: Text(
-                    t.forgetPassword,
-                    style: AppStyles.forgetPassword(context),
-                  ),
-                ),
-              ],
-            ),
+            ForgetLink(text: t.forgetPassword),
             SizedBox(height: 30),
             CustomElevatedButton(
-              text: Text(t.login),
+              text: _isLoading
+                  ? SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : Text(t.login),
+              onPressed: _isLoading ? null : _login,
+            ),
+            SizedBox(height: 48),
+            AuthSwitchLink(
+              promptText: t.dontHaveAnAccount,
+              actionText: t.signUp,
               onPressed: () {
                 Navigator.pushReplacementNamed(
                   context,
-                  AppRoutes.mainLayoutScreen,
+                  AppRoutes.registerScreen,
                 );
               },
             ),
-            SizedBox(height: 48),
-            Row(
-              mainAxisAlignment: .center,
-              children: [
-                Text(t.dontHaveAnAccount),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                      context,
-                      AppRoutes.registerScreen,
-                    );
-                  },
-                  child: Text(t.signUp, style: AppStyles.signUp(context)),
-                ),
-              ],
-            ),
             SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: .center,
-              children: [Text(t.or, style: AppStyles.or(context))],
-            ),
+            OrDivider(text: "Or"),
             SizedBox(height: 24),
-            ElevatedButton(
-              style: AppStyles.signUpWithGoogle(context),
-              onPressed: () {},
-              child: Row(
-                mainAxisAlignment: .center,
-                children: [
-                  Image.asset(AppImages.google),
-                  SizedBox(width: 16),
-                  Text(t.loginWithGoogle),
-                ],
-              ),
+            GoogleSignInButton(
+              label: t.loginWithGoogle,
+              onPressed: _isLoading ? null : _signInWithGoogle,
             ),
           ],
         ),

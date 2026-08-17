@@ -60,6 +60,14 @@ class AppStyles {
     );
   }
 
+  static TextStyle welcomeBack(BuildContext context) {
+    return TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      color: Theme.of(context).textTheme.bodyMedium!.color, // main color
+    );
+  }
+
   static ButtonStyle elevatedButton(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return ElevatedButton.styleFrom(

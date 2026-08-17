@@ -13,11 +13,13 @@ import 'package:evently/screens/register_screen/register_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await GoogleSignIn.instance.initialize();
   runApp(
     MultiProvider(
       providers: [
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = context.watch<LanguageProvider>().locale;
-    final ThemeMode = context.watch<ThemeProvider>().themeMode;
+    final themeMode = context.watch<ThemeProvider>().themeMode;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: locale,
@@ -48,8 +50,8 @@ class MyApp extends StatelessWidget {
       supportedLocales: const [Locale('en'), Locale('ar')],
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode,
-      initialRoute: AppRoutes.authScreen,
+      themeMode: themeMode,
+      initialRoute: AppRoutes.personalizeScreen,
       routes: {
         AppRoutes.personalizeScreen: (context) => const PersonalizeScreen(),
         AppRoutes.onBoardingScreen: (context) => const OnBoardingScreen(),

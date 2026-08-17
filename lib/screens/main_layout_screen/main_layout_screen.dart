@@ -1,7 +1,8 @@
 import 'package:evently/constants/app_styles.dart';
-import 'package:evently/l10n/app_localizations.dart';
+
 import 'package:evently/screens/main_layout_screen/tabs/home/home.dart';
 import 'package:evently/screens/main_layout_screen/widgets/destinations.dart';
+
 import 'package:flutter/material.dart';
 
 class MainLayoutScreen extends StatefulWidget {
@@ -15,7 +16,6 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       bottomNavigationBar: ClipRRect(
