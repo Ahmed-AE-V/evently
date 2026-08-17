@@ -1,5 +1,4 @@
 import 'package:evently/constants/app_colors.dart';
-import 'package:evently/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -16,7 +15,7 @@ class AppTheme {
         surface: AppColors.lightInputs,
         error: AppColors.red,
         onPrimary: AppColors.white,
-        onSurface: AppColors.lightMainText,
+        onSurface: AppColors.disable,
       ),
       textTheme: TextTheme(
         bodyLarge: TextStyle(color: AppColors.lightMainText),

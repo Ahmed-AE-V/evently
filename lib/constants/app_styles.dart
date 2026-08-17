@@ -5,7 +5,7 @@ class AppStyles {
     return TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      color: Theme.of(context).colorScheme.onSurface, // mainText
+      color: Theme.of(context).textTheme.bodyLarge!.color,
     );
   }
 
@@ -34,6 +34,14 @@ class AppStyles {
     );
   }
 
+  static TextStyle forgetAppBar(BuildContext context) {
+    return TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      color: Theme.of(context).textTheme.bodyLarge!.color, // main color
+    );
+  }
+
   static TextStyle forgetPassword(BuildContext context) {
     return TextStyle(
       fontSize: 14,
@@ -57,7 +65,7 @@ class AppStyles {
     return ElevatedButton.styleFrom(
       padding: EdgeInsets.symmetric(
         vertical: 14,
-        horizontal: MediaQuery.of(context).size.width * .3,
+        horizontal: MediaQuery.of(context).size.width * .2,
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       backgroundColor: scheme.primary,
@@ -107,6 +115,22 @@ class AppStyles {
       fontSize: 16,
       fontWeight: FontWeight.w600,
       color: Theme.of(context).colorScheme.primary,
+    );
+  }
+
+  static TextStyle navLabelText(BuildContext context) {
+    return TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      color: Theme.of(context).disabledColor,
+    );
+  }
+
+  static TextStyle navSelectedLabelText(BuildContext context) {
+    return TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      color: Theme.of(context).primaryColor,
     );
   }
 

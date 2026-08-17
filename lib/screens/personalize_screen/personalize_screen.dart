@@ -1,6 +1,4 @@
-import 'package:evently/constants/app_colors.dart';
 import 'package:evently/constants/app_images.dart';
-
 import 'package:evently/constants/app_styles.dart';
 import 'package:evently/l10n/app_localizations.dart';
 import 'package:evently/providers/language_provider.dart';
@@ -23,7 +21,6 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     final language = context.watch<LanguageProvider>().languageCode;
-    final ThemeMode = context.watch<ThemeProvider>().isDarkMode;
     final selectedTheme = context.watch<ThemeProvider>().isDarkMode
         ? "dark"
         : "light";

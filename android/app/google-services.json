@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "321818458213",
+    "project_id": "smokey-evently",
+    "storage_bucket": "smokey-evently.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321818458213:android:b08ee4bbbd90dbf6186e8c",
+        "android_client_info": {
+          "package_name": "com.example.evently"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVDGPeqd5nonAyY6ch347HlAAt5UmaBZ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
