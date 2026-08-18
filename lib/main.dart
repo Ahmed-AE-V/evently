@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
-      initialRoute: AppRoutes.personalizeScreen,
+      initialRoute: AppRoutes.mainLayoutScreen,
       routes: {
         AppRoutes.personalizeScreen: (context) => const PersonalizeScreen(),
         AppRoutes.onBoardingScreen: (context) => const OnBoardingScreen(),

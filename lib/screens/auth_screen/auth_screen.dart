@@ -82,6 +82,7 @@ class _AuthScreenState extends State<AuthScreen> {
       ).showSnackBar(SnackBar(content: Text(_authService.getErrorMessage(e))));
     } catch (e) {
       if (!mounted) return;
+      // ignore: avoid_print
       print('Google sign-in error: $e');
       ScaffoldMessenger.of(
         context,

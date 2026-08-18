@@ -22,6 +22,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _authService = AuthService();
+  // ignore: unused_field
   bool _isLoading = false;
 
   Future<void> _register() async {
