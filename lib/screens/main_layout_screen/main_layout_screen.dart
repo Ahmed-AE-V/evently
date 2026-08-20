@@ -1,6 +1,7 @@
 import 'package:evently/constants/app_styles.dart';
 
 import 'package:evently/screens/main_layout_screen/tabs/home/home.dart';
+import 'package:evently/screens/main_layout_screen/tabs/profile/profile.dart';
 import 'package:evently/screens/main_layout_screen/widgets/destinations.dart';
 
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
           }),
         ),
       ),
-      body: <Widget>[Home(), Card(), Card()][currentIndex],
+      body: <Widget>[Home(), Card(), Profile()][currentIndex],
     );
   }
 }

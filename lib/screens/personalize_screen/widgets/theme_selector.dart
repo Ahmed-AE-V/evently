@@ -22,16 +22,14 @@ class ThemeSelector extends StatelessWidget {
           label: const Icon(Icons.light_mode),
           value: "light",
           selected: selectedTheme,
-          onChanged: (value) =>
-              context.read<ThemeProvider>().toggleTheme(value == "dark"),
+          onChanged: (value) => context.read<ThemeProvider>().toggleTheme(),
         ),
         const SizedBox(width: 8),
         CustomSegmentedButton(
           label: const Icon(Icons.dark_mode_outlined),
           value: "dark",
           selected: selectedTheme,
-          onChanged: (value) =>
-              context.read<ThemeProvider>().toggleTheme(value == "dark"),
+          onChanged: (value) => context.read<ThemeProvider>().toggleTheme(),
         ),
       ],
     );

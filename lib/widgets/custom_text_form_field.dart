@@ -30,11 +30,11 @@ class CustomTextFormField extends StatelessWidget {
         suffixIcon: suffixIcon,
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Theme.of(context).disabledColor),
+          borderSide: BorderSide(color: Theme.of(context).dividerColor),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Theme.of(context).disabledColor),
+          borderSide: BorderSide(color: Theme.of(context).dividerColor),
         ),
       ),
     );

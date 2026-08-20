@@ -10,6 +10,7 @@ import 'package:evently/screens/main_layout_screen/main_layout_screen.dart';
 import 'package:evently/screens/on_boarding_screen/on_boarding_screen.dart';
 import 'package:evently/screens/personalize_screen/personalize_screen.dart';
 import 'package:evently/screens/register_screen/register_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = context.watch<LanguageProvider>().locale;
     final themeMode = context.watch<ThemeProvider>().themeMode;
+    final currentUser = FirebaseAuth.instance.currentUser;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: locale,
@@ -51,7 +53,9 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
-      initialRoute: AppRoutes.mainLayoutScreen,
+      initialRoute: currentUser != null
+          ? AppRoutes.mainLayoutScreen
+          : AppRoutes.authScreen,
       routes: {
         AppRoutes.personalizeScreen: (context) => const PersonalizeScreen(),
         AppRoutes.onBoardingScreen: (context) => const OnBoardingScreen(),
