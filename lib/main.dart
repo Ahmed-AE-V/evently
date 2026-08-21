@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = context.watch<LanguageProvider>().locale;
     final themeMode = context.watch<ThemeProvider>().themeMode;
-    final currentUser = FirebaseAuth.instance.currentUser;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: locale,
@@ -53,9 +53,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
-      initialRoute: currentUser != null
-          ? AppRoutes.mainLayoutScreen
-          : AppRoutes.authScreen,
+      initialRoute: AppRoutes.authScreen,
       routes: {
         AppRoutes.personalizeScreen: (context) => const PersonalizeScreen(),
         AppRoutes.onBoardingScreen: (context) => const OnBoardingScreen(),

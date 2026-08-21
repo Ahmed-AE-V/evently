@@ -21,7 +21,10 @@ class Profile extends StatelessWidget {
           crossAxisAlignment: .stretch,
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(currentUser!.photoURL!),
+              backgroundImage: NetworkImage(
+                currentUser!.photoURL ??
+                    "https://www.pngfind.com/pngs/m/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.png",
+              ),
 
               radius: 80,
             ),
@@ -161,33 +164,3 @@ class ProfileContainer extends StatelessWidget {
     );
   }
 }
-
-// class ProfileContainer extends StatelessWidget {
-//   const ProfileContainer({
-//     super.key,
-//     required this.theme,
-//     required this.widget,
-//     required this.label,
-//   });
-//   final String label;
-//   final Widget widget;
-//   final ThemeData theme;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         Text(
-//           label,
-//           style: TextStyle(
-//             fontSize: 16,
-//             fontWeight: .w500,
-//             color: theme.textTheme.bodyLarge!.color,
-//           ),
-//         ),
-//         Spacer(),
-//         widget,
-//       ],
-//     );
-//   }
-// }
